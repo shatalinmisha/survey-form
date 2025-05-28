@@ -29,7 +29,11 @@
 ##Как реализуем JavaScript:
 
 📌 1. Обновление значения ползунка (рейтинга)
-![alt text](image.png)
+```
+document.getElementById("rating").addEventListener("input", function() {
+    document.getElementById("rating-value").textContent = this.value;
+});
+```
 
 
 - Как это работает?
@@ -44,7 +48,10 @@
 
 📌 2. Обработка отправки формы
 
-![alt text](image-1.png)
+```
+document.getElementById("survey-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+```
 
 -Как это работает?
 
@@ -57,7 +64,15 @@
 Запрещает браузеру перезагружать страницу при нажатии на кнопку "Отправить".
 
 📌 3. Сбор данных из формы
-![alt text](image-2.png)
+```
+let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let gender = document.querySelector("input[name='gender']:checked");
+    let rating = document.getElementById("rating").value;
+    let interests = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
+        .map(el => el.value);
+    let comments = document.getElementById("comments").value.trim();
+```
 
 -Как это работает?
 
@@ -82,7 +97,14 @@
 
 📌 4. Валидация данных
 
-![alt text](image-3.png)
+```
+    document.getElementById("name-error").classList.toggle("hidden", name !== "");
+    document.getElementById("email-error").classList.toggle("hidden", email.match(/^[^@]+@[^@]+\.[a-z]{2,}$/i));
+
+    if (!name || !email.match(/^[^@]+@[^@]+\.[a-z]{2,}$/i)) {
+        return;
+    }
+    ```
 
 - Как это работает?
 
@@ -99,7 +121,20 @@
 
 📌 5. Вывод данных на экран
 
-![alt text](image-4.png)
+```let resultHTML = `
+        <h3 class='text-lg font-bold'>Результаты:</h3>
+        <p><strong>Имя:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Пол:</strong> ${gender ? gender.value : "Не указан"}</p>
+        <p><strong>Оценка сервиса:</strong> ${rating}</p>
+        <p><strong>Интересы:</strong> ${interests.length > 0 ? interests.join(", ") : "Не выбрано"}</p>
+        <p><strong>Комментарии:</strong> ${comments || "Нет"}</p>
+    `;
+    
+    let resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = resultHTML;
+    resultDiv.classList.remove("hidden");
+    ```
 
 - Как это работает?
 
